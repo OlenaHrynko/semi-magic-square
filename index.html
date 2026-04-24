@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semi-magic square</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap-grid.min.css">
+</head>
+<body>
+<main class="container">
+    <header>
+        Обери рівень складності завдання (легкий, середній чи важкий), порядок (розмір) квадрата та натисни кнопку "Створити".
+        Віднови числа у клітинках, вписуючи одну цифру поруч із уже заданою  так, щоб сума чисел у кожному рядку та стовпчику дорівнювала магічній константі (числу у колі).
+    </header>
+    <nav class="row">
+        <section id="complexity-level" class="radio-check-area col-sm-12 col-md-8 col-lg" style="margin-top: 2%; margin-bottom: 2%;" >
+            <span>Складність:</span>
+            <label tabindex="1">
+                <input type="radio" name="complexity" value="EASY_LEVEL" selected>
+                <span class="inner" id="EASY_LEVEL"></span>
+                <span>Легк.</span>
+            </label>
+            <label tabindex="2">
+                <input type="radio" name="complexity" value="MEDIUM_LEVEL">
+                <span class="inner" id="MEDIUM_LEVEL"></span>
+                <span>Сер.</span>
+            </label>
+            <label tabindex="3">
+                <input type="radio" name="complexity" value="HARD_LEVEL">
+                <span class="inner" id="HARD_LEVEL"></span>
+                <span>Важк.</span>
+            </label>
+        </section>
+        <section style="display: flex; align-items: center; margin-top: 2%; margin-bottom: 2%;" class=" col-sm-12 col-md-4 col-lg">
+            <label id="order-label">Порядок:
+                <input name="order" id="order" inputmode="numeric" min="3" max="10" placeholder="3">
+            </label>
+        </section>
+        <div class="col-sm-12 col-md-12 col-lg" style="display: flex; align-items: center; justify-content: center; margin-top: 2%; margin-bottom: 2%;">
+            <button type="button" class="cta cta-primary" id="generate" onclick="generate()">Створити</button>
+        </div>
+    </nav>
+
+    <div id="magic-square"  style="margin-top: 2%; margin-bottom: 2%;">
+        <div class="magic-const-wrapper" style="display: flex; align-items: center; justify-content: center;" >
+            <p id ="const" ></p>
+        </div>
+        <div class="board-wrapper">
+            <div id="board"></div>
+        </div>
+    </div>
+</main>
+
+<footer class="int-footer container">
+    <button type="button" aria-label="Спробуйте ще раз" class="cta cta-icon cta-secondary" onclick="retry()">
+        <i aria-hidden="true" class="material-icons">refresh</i>
+    </button>
+    <button type="button" class="cta cta-primary" onclick="check()" id="check">Перевірити</button>
+    <button type="button" aria-label="Показати підказку" class="cta cta-icon cta-secondary" onclick="help()">?</button>
+    <p id="a"></p>
+</footer>
+
+<div class="modal-overlay" id="helpModal" style="display: none;">
+    <div class="help-card-container">
+        <button class="close-help" onclick="closeHelp()">×</button>
+        
+        <div class="help-card active" data-step="1">
+            <img src="step1.png" class="help-img">
+            <h2>1. Початок гри</h2>
+            <p>Обери розмір квадрата та рівень складності, а потім натисни <strong>"Створити"</strong>.</p>
+        </div>
+
+        <div class="help-card" data-step="2">
+            <img src="step2.png" class="help-img">
+            <h2>2. Як грати?</h2>
+            <p>Допиши одну цифру в порожнє поле поруч із уже заданою. <br> Наприклад: <strong>4_</strong> + твоя <strong>9</strong> = <strong>49</strong>.</p>
+        </div>
+
+        <div class="help-card" data-step="3">
+            <img src="step3.png" class="help-img">
+            <h2>3. Помічники</h2>
+            <p><strong>"Перевірити"</strong> — коли все готово. <br> <strong>"↺"</strong> — почати <strong>цей</strong> квадрат заново.</p>
+        </div>
+
+<div class="help-card" data-step="4">
+            <img src="step4.png" class="help-img">
+            <h2>4. Результати</h2>
+            <p><span style="color:red; font-weight:bold;">● Червона лінія:</span> сума чисел у цьому рядку або стовпчику ще не дорівнює магічній константі.</p>
+            <p><span style="color:#999; font-weight:bold;">● Біла клітинка:</span> це означає, що по одному з напрямків (вертикально або горизонтально) сума вже правильна!</p>
+            <p><span style="color:green; font-weight:bold;">● Все зелене:</span> суми скрізь правильні. Вітаємо, ти переміг!</p>
+        </div>
+
+<div class="card-navigation">
+    <button id="prevCard" class="cta cta-primary" onclick="changeCard(-1)" disabled>← Назад</button>
+    <span id="cardCounter">1 / 4</span>
+    <button id="nextCard" class="cta cta-primary" onclick="changeCard(1)">Далі →</button>
+</div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/semi-magic-square.js"></script>
+<script type="text/javascript" src="js/square-masking.js"></script>
+<script type="text/javascript" src="js/operations.js"></script>
+<script src="js/listeners.js"></script>
+</body>
+</html>
