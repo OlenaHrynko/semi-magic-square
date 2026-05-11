@@ -163,10 +163,11 @@ table {
     border-collapse: collapse;
     margin: 0 auto;
     border: 4px solid #5B9BD5;
-    max-width: 80%;
 }
 
 table tr td {
+    width: 70px;
+    height: 70px;
     padding: 0;
     text-align: center;
     border: 4px solid #5B9BD5;
@@ -551,10 +552,6 @@ table {
     max-width: 500px;
 }
 
-table td {
-    aspect-ratio: 1 / 1;
-    width: calc(100% / var(--n));
-}
 
     .content-wrapper {
         font-size: 1.2rem;
